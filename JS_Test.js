@@ -1,20 +1,28 @@
 const URL = "https://examples.com/api/user/authernticate?"; //вынос в константы
 const SUCCESSFUL_STATUS = 200; //вынос в константы
+
 class UserService {
-	var username;
-	var password;
+   //Убрали бесполезный код, для сервиса не требуется экземляр и соответсвенно поля username, password и их геттеры
+   static authenticate_user(username, password, callback) {
+      const xhr = new XMLHttpRequest();
 
-	constructor(username, password) {
-		this.username = username;
-		this.password = password;
-	}
+      xhr.responseType = "json";
+      xhr.open("GET", `${URL}username=${username}&password=${password}`, true); //Для читабельности используем шаблонную строку
 
-	get username() {
-		return UserService.username;
-	}
+      xhr.onload = function () {
+         xhr.status === SUCCESSFUL_STATUS
+            ? callback(true)
+            : callback(new Error(xhr.status));
+      };
+      xhr.onerror = function () { //Также обрабатываем ошибку и возвращаем её
+         callback(new Error("Unable to connect"));
+      };
+
+      xhr.send(); //Отправляем запрос
+   }
 	get password() {
 		throw "You are not allowed to get password";
-	}
+}
 
 	static authenticate_user() {
 		let xhr = new XMLHttpRequest();
