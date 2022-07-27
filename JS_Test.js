@@ -1,3 +1,5 @@
+const URL = "https://examples.com/api/user/authernticate?"; //вынос в константы
+const SUCCESSFUL_STATUS = 200; //вынос в константы
 class UserService {
 	var username;
 	var password;
