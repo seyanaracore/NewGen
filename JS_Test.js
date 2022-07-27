@@ -20,39 +20,24 @@ class UserService {
 
       xhr.send(); //Отправляем запрос
    }
-	get password() {
-		throw "You are not allowed to get password";
 }
 
-	static authenticate_user() {
-		let xhr = new XMLHttpRequest();
-		xhr.open('GET', 'https://examples.com/api/user/authernticate?username=' +
-		 	 UserService.username + "&password=" + UserService.password, true);
-		xhr.responseType = "json";
+const formHandler = (e) => {
+   e.preventDefault(); //Из селектора можно понять, что кнопка логин находится в форме, необходимо отменить обновление страницы
+   const username = $("#username").val(); //Предполагается, что это инпуты, необходимо получить значение
+   const password = $("#password").val(); //Предполагается, что это инпуты, необходимо получить значение
 
-		const result = false;
+   if (!username.length || !password.length) return; //Если один из инпутов пуст, то прекратить выполнение
 
-		xhr.onload = function() {
-			if(xhr.status !== '200') {
-				result = xhr.response;
-			} else {
-				result = true;
-			}
-		}
+   const responseHandler = (response) => { //Обработчик ответа запроса
+      if (response === true) {
+         document.location.href = "/home";
+      } else {
+         alert(response.message); //В негативном случае ожидается объект ошибки со свойством message
+      }
+   };
 
-		return result
-	}
-}
+   UserService.authenticate_user(username, password, responseHandler); //Передаём обработчик ответа
+};
 
-$('form #login').click(function(){
-	var username = $("#username");
-	var password = $("#password");
-
-	var res = UserService(username, password).authenticate_user();
-
-	if(res == true) {
-		document.location.href = "/home";
-	} else {
-		alert(res.error);
-	}
-})
+$("form #login").click(formHandler); //Вынос обработчика в отдельную функцию и её назначение на событие клика
