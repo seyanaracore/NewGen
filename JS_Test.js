@@ -2,7 +2,7 @@ const URL = "https://examples.com/api/user/authernticate?"; //вынос в ко
 const SUCCESSFUL_STATUS = 200; //вынос в константы
 
 class UserService {
-   //Убрали бесполезный код, для сервиса не требуется экземляр и соответсвенно поля username, password и их геттеры
+   //Удаление бесполезного кода, для сервиса не требуется экземляр и соответсвенно поля username, password и их геттеры
    static authenticate_user(username, password, callback) {
       const xhr = new XMLHttpRequest();
 
